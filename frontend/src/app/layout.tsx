@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import '@mantine/core/styles.css';
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps, createTheme } from '@mantine/core';
 import { appTheme } from "./theme/theme";
+import { RillaHeader } from "./components/layout/header/header";
+import { RillaFooter } from "./components/layout/footer/footer";
 
 export const metadata: Metadata = {
   title: 'My Mantine app',
@@ -20,7 +21,7 @@ export default function RootLayout({
         <ColorSchemeScript defaultColorScheme="auto" />
       </head>
       <body>
-        <MantineProvider theme={appTheme} defaultColorScheme="light">{children}</MantineProvider>
+        <MantineProvider theme={appTheme} defaultColorScheme="light"><RillaHeader/>{children}<RillaFooter/></MantineProvider>
       </body>
     </html>
   );
