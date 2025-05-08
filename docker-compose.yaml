@@ -1,0 +1,131 @@
+services:
+  rillastudios:
+    build:
+      context: ./rillastudios
+      dockerfile: Dockerfile
+    container_name: rillastudios
+    ports:
+      - "3002:3000"
+    networks:
+      - rillastudiosnet
+    environment:
+      - NODE_ENV=${NODE_ENV}
+    restart: always
+    depends_on:
+      - rillastudios_db
+
+  rillastudios_db:
+    image: mysql:latest
+    container_name: rillastudios_db
+    ports:
+      - "3308:3306"
+    networks:
+      - rillastudiosnet
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    # UNCOMMENT FOR DEPLOYMENT
+    volumes:
+      - /var/lib/docker_volumes/mysql/rillastudios:/var/lib/mysql
+    restart: always
+
+  rillastudios_phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: rillastudios_phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: ${PMA_HOST}
+      PMA_PORT: ${PMA_PORT}
+    networks:
+      - rillastudiosnet
+    ports:
+      - "9002:80"
+    depends_on:
+      - rillastudios_db
+
+  rillastudios_cache:
+    container_name: rillastudios_cache
+    image: redis:latest
+    healthcheck:
+      test: ["CMD-SHELL", "[ $$(redis-cli ping) = 'PONG' ]"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_interval: 5s
+      start_period: 30s
+    networks:
+      - rillastudiosnet
+
+  rillastudios_cms_db:
+    container_name: rillastudios_cms_db
+    image: postgis/postgis:13-master
+    platform: linux/amd64
+    volumes:
+      - /data/rillastudios_database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD", "pg_isready", "--host=localhost", "--username=${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_interval: 5s
+      start_period: 30s
+    networks:
+      - rillastudiosnet
+
+  directus: 
+    container_name: rillastudios_directus
+    image: directus/directus:latest
+    ports:
+      - 8056:8055
+    depends_on:
+      rillastudios_cms_db:
+        condition: service_healthy
+      rillastudios_cache:
+        condition: service_healthy
+    volumes:
+      - /var/lib/docker_volumes/directus/rillastudios/database:/directus/database
+      - /var/lib/docker_volumes/directus/rillastudios/uploads:/directus/uploads
+      - /var/lib/docker_volumes/directus/rillastudios/extensions:/directus/extensions
+
+    environment:
+      SECRET: ${DIRECTUS_SECRET}
+
+      ADMIN_EMAIL: ${DIRECTUS_EMAIL}
+      ADMIN_PASSWORD: ${DIRECTUS_PASSWORD}
+
+      DB_CLIENT: ${DIRDB_CLIENT}
+      DB_HOST: ${DIRDB_HOST}
+      DB_PORT: ${DIRDB_PORT}
+
+      DB_DATABASE: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+
+      CACHE_ENABLED: ${DIRCACHE_ENABLED}
+      CACHE_AUTO_PURGE: ${DIRCACHE_AUTO_PURGE}
+      CACHE_STORE: ${DIRCACHE_STORE}
+
+      REDIS: ${DIRREDIS}
+
+      CORS_ENABLED: ${DIRECTUS_CORS_ENABLED}
+      CORS_ORIGIN: ${DIRECTUS_CORS_ORIGIN}
+
+      RATE_LIMITER_ENABLED: ${DIRECTUS_RATE_LIMITER_ENABLED}
+      RATE_LIMITER_POINTS: ${DIRECTUS_RATE_LIMITER_POINTS}
+      RATE_LIMITER_DURATION: ${DIRECTUS_RATE_LIMITER_DURATION}
+      RATE_LIMITER_GLOBAL_POINTS: ${DIRECTUS_RATE_LIMITER_GLOBAL_POINTS}
+      RATE_LIMITER_GLOBAL_DURATION: ${DIRECTUS_RATE_LIMITER_GLOBAL_DURATION}
+      PRESSURE_LIMITER_ENABLED: ${DIRECTUS_PRESSURE_LIMITER_ENABLED}
+
+    networks:
+      - rillastudiosnet
+
+networks:
+  rillastudiosnet:
+    external: true
