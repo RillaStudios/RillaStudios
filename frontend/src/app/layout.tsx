@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import '@mantine/core/styles.css';
-import { ColorSchemeScript, MantineProvider, mantineHtmlProps, createTheme } from '@mantine/core';
+import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
 import { appTheme } from "./theme/theme";
-import { RillaHeader } from "./components/layout/header/header";
-import { RillaFooter } from "./components/layout/footer/footer";
+import { RillaHeader } from "./components/global/layout/header/header";
+import { RillaFooter } from "./components/global/layout/footer/footer";
 
 export const metadata: Metadata = {
-  title: 'My Mantine app',
+  title: 'Rilla Studios',
   description: 'I have followed setup instructions carefully',
+  authors: [{ name: 'Izaak Ford-Dow'}],
+  keywords: ['Rilla Studios', 'Izaak Ford-Dow'],
 };
 
 export default function RootLayout({
@@ -21,7 +23,11 @@ export default function RootLayout({
         <ColorSchemeScript defaultColorScheme="auto" />
       </head>
       <body>
-        <MantineProvider theme={appTheme} defaultColorScheme="light"><RillaHeader/>{children}<RillaFooter/></MantineProvider>
+        <MantineProvider theme={appTheme} defaultColorScheme="auto">
+          <RillaHeader/>
+          {children}
+          <RillaFooter/>
+        </MantineProvider>
       </body>
     </html>
   );

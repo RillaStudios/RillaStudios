@@ -30,6 +30,7 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import classes from './HeaderMegaMenu.module.css';
 import RillaLogo from '../../logo';
+import ThemeToggle from '../../theme_toggle/theme_toggle';
 
 const mockdata = [
   {
@@ -90,10 +91,13 @@ export function RillaHeader() {
   return (
     <Box pb={0}>
       <header className={classes.header}>
-        <Group justify="space-between" h="100%">
+      <Group h="100%" style={{ width: '100%', position: 'relative' }}>
+        <Box style={{ position: 'absolute', left: 0 }}>
           <RillaLogo/>
+        </Box>
 
-          <Group h="100%" gap={0} visibleFrom="sm">
+          <Group h="100%" gap={0} style={{ width: '100%', justifyContent: 'center' }} visibleFrom="sm">
+
             <a href="#" className={classes.link}>
               Home
             </a>
@@ -146,12 +150,18 @@ export function RillaHeader() {
             </a>
           </Group>
 
-          <Group visibleFrom="sm">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+          <Group style={{ position: 'absolute', right: 0 }} visibleFrom="sm">
+            <Button variant="default">Learn More</Button>
+            <Button>Get Started</Button>
+            <ThemeToggle />
           </Group>
 
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+          <Burger 
+            opened={drawerOpened} 
+            onClick={toggleDrawer} 
+            hiddenFrom="sm" 
+            style={{ position: 'absolute', right: 0 }}
+          />
         </Group>
       </header>
 
@@ -189,8 +199,8 @@ export function RillaHeader() {
           <Divider my="sm" />
 
           <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            <Button variant="default">Learn More</Button>
+            <Button>Get Started</Button>
           </Group>
         </ScrollArea>
       </Drawer>

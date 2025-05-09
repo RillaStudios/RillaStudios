@@ -10,40 +10,40 @@ export const appTheme = createTheme({
     // Color scheme
     colors: {
         primary: [
-            "#f2f5f8",
-            "#e4e6e9",
-            "#c4cbd4",
-            "#a1afc0",
-            "#8497af",
-            "#7288a4",
-            "#6781a1",
-            "#566e8d",
-            "#4b627e",
-            "#1e2a38"
+            "#ffe7e9",
+            "#ffced0",
+            "#ff9b9f",
+            "#ff646a",
+            "#fe373d",
+            "#fe1b21",
+            "#ff0009",
+            "#e40007",
+            "#cb0004",
+            "#b20000"
         ],
         secondary: [
-            "#fff5e4",
-            "#f9e9d3",
-            "#edd2ac",
-            "#e2ba81",
-            "#d9a760",
-            "#d29845",
-            "#d09137",
-            "#b87d29",
-            "#a46f20",
-            "#8f5f14"
+            "#fff3e1",
+            "#ffe6cc",
+            "#ffcc9a",
+            "#ffb164",
+            "#fe9937",
+            "#fe8a1a",
+            "#ff7e00",
+            "#e37000",
+            "#cb6200",
+            "#b15300"
         ],
         tertiary: [
-            "#f9f1ff",
-            "#eae3ef",
-            "#d0c5d7",
-            "#b5a6be",
-            "#9986a5",
-            "#8f7b9c",
-            "#897297",
-            "#766084",
-            "#6a5577",
-            "#5c486a"
+            "#fffde1",
+            "#fff9cb",
+            "#fff29a",
+            "#ffea64",
+            "#ffe438",
+            "#ffe01d",
+            "#ffdd00",
+            "#e3c500",
+            "#caaf00",
+            "#ae9600"
         ]
     },
 
