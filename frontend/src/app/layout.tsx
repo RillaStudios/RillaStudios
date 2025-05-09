@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import '@mantine/core/styles.css';
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
 import { appTheme } from "./theme/theme";
-import { RillaHeader } from "./components/global/layout/header/header";
-import { RillaFooter } from "./components/global/layout/footer/footer";
+import { RillaHeader } from "./components/layout/header/header";
+import { RillaFooter } from "./components/layout/footer/footer";
 
 export const metadata: Metadata = {
   title: 'Rilla Studios',

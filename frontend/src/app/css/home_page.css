@@ -1,0 +1,5 @@
+.ai_section {
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8));
+    padding: 2rem 0;
+    margin: 2rem 0;
+  }  
